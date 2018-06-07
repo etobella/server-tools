@@ -49,7 +49,10 @@ Such methods must return a tuple ``(RC, MESSAGE, PERFORMANCE_DATA)`` where ``RC`
 - 2: CRITICAL
 - 3: UNKNOWN
 
-each element of ``PERFORMANCE_DATA`` will be a dictionary with the following values:
+``PERFORMANCE_DATA`` is not mandatory, so it could be possible to send
+``(RC, MESSAGE)``.
+Each element of ``PERFORMANCE_DATA`` will be a dictionary that could contain
+the possible elements:
 
 - value: value of the data (required)
 - max: Max value on the chart
@@ -57,6 +60,8 @@ each element of ``PERFORMANCE_DATA`` will be a dictionary with the following val
 - warn: Warning value on the chart
 - crit: Critical value on the chart
 - uom: Unit of Measure on the chart (s - Seconds, % - Percentage, B - Bytes, c - Continuous)
+
+The key of the dictionary will be used as the performance_data label.
 
 E.g:
 
@@ -70,8 +75,11 @@ E.g:
             mails = self.search([('state', '=', 'exception')])
             if mails:
                 return (1, u"%s mails not sent" % len(mails), {
-                  'exceptions': {'value': mails}})
-            return (0, u"OK", {'exceptions': {'value': mails}})
+                  'exceptions': {'value': len(mails)}})
+            return (0, u"OK", {'exceptions': {'value': len(mails)}})
+
+On the example, the performance data will use the label ``exceptions`` and the
+value will be the number of exception of mails.
 
 Usage
 =====
