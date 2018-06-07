@@ -9,6 +9,7 @@ import subprocess
 
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
+from odoo.tools.safe_eval import safe_eval
 
 _logger = logging.getLogger(__name__)
 
@@ -91,9 +92,13 @@ class NscaCheck(models.Model):
         check = self.browse(check_id)
         rc, message, performance = 3, "Unknown", {}
         try:
-            args = tuple(check.nsca_args or '')
             NscaModel = self.env[check.nsca_model]
-            result = getattr(NscaModel, check.nsca_function)(*args)
+            results = {'model': NscaModel}
+            safe_eval(
+                'result = model.%s(%s)' % (
+                    check.nsca_function, check.nsca_args or ''),
+                results, mode="exec", nocopy=True)
+            result = results['result']
             if not result:
                 if check.allow_void_result:
                     return False
