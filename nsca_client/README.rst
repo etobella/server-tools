@@ -40,13 +40,23 @@ To configure this module, you need to:
 
 * Code the methods which will be called by the NSCA checks.
 
-Such methods must return a tuple ``(RC, MESSAGE)`` where ``RC`` is an integer,
-and ``MESSAGE`` a unicode string. ``RC`` values and the corresponding status are:
+Such methods must return a tuple ``(RC, MESSAGE, PERFORMANCE_DATA)`` where ``RC`` is an integer,
+``MESSAGE`` a unicode string AND ``PERFOMANCE_DATA`` is a dictionary.
+``RC`` values and the corresponding status are:
 
 - 0: OK
 - 1: WARNING
 - 2: CRITICAL
 - 3: UNKNOWN
+
+each element of ``PERFORMANCE_DATA`` will be a dictionary with the following values:
+
+- value: value of the data (required)
+- max: Max value on the chart
+- min: Minimum value on the chart
+- warn: Warning value on the chart
+- crit: Critical value on the chart
+- uom: Unit of Mesure on the chart (s - Seconds, % - Percentage, B - Bytes, c - Continuous)
 
 E.g:
 
@@ -59,20 +69,16 @@ E.g:
         def nsca_check_mails(self):
             mails = self.search([('state', '=', 'exception')])
             if mails:
-                return (1, u"%s mails not sent" % len(mails))
-            return (0, u"OK")
+                return (1, u"%s mails not sent" % len(mails), {
+                  'exceptions': {'value': mails}})
+            return (0, u"OK", {'exceptions': {'value': mails}})
 
 Usage
 =====
 
 .. image:: https://odoo-community.org/website/image/ir.attachment/5784_f2813bd/datas
    :alt: Try me on Runbot
-   :target: https://runbot.odoo-community.org/runbot/149/8.0
-
-Known issues / Roadmap
-======================
-
-* Send performance data
+   :target: https://runbot.odoo-community.org/runbot/149/11.0
 
 Bug Tracker
 ===========
@@ -80,11 +86,8 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues
 <https://github.com/OCA/server-tools/issues>`_. In case of trouble, please
 check there if your issue has already been reported. If you spotted it first,
-help us smashing it by providing a detailed and welcomed `feedback
-<https://github.com/OCA/
-server-tools/issues/new?body=module:%20
-nsca_client%0Aversion:%20
-8.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+help us smashing it by providing a detailed and welcomed feedback.
+
 
 Credits
 =======
@@ -98,6 +101,7 @@ Contributors
 ------------
 
 * Sébastien Alix <sebastien.alix@osiell.com>
+* Enric Tobella <etobella@creublanca.es>
 
 Maintainer
 ----------
