@@ -56,7 +56,7 @@ each element of ``PERFORMANCE_DATA`` will be a dictionary with the following val
 - min: Minimum value on the chart
 - warn: Warning value on the chart
 - crit: Critical value on the chart
-- uom: Unit of Mesure on the chart (s - Seconds, % - Percentage, B - Bytes, c - Continuous)
+- uom: Unit of Measure on the chart (s - Seconds, % - Percentage, B - Bytes, c - Continuous)
 
 E.g:
 
