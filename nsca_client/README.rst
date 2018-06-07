@@ -51,8 +51,7 @@ Such methods must return a tuple ``(RC, MESSAGE, PERFORMANCE_DATA)`` where ``RC`
 
 ``PERFORMANCE_DATA`` is not mandatory, so it could be possible to send
 ``(RC, MESSAGE)``.
-Each element of ``PERFORMANCE_DATA`` will be a dictionary that could contain
-the possible elements:
+Each element of ``PERFORMANCE_DATA`` will be a dictionary that could contain:
 
 - value: value of the data (required)
 - max: Max value on the chart
