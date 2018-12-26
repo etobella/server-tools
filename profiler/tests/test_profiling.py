@@ -1,10 +1,10 @@
 
 # Copyright 2018 Vauxoo (https://www.vauxoo.com) <info@vauxoo.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
-from odoo.tests.common import TransactionCase
+from odoo.tests.common import HttpCase
 
 
-class TestProfiling(TransactionCase):
+class TestProfiling(HttpCase):
 
     def test_profile_creation(self):
         """We are testing the creation of a profile."""
@@ -12,7 +12,9 @@ class TestProfiling(TransactionCase):
         profile = prof_obj.create({'name': 'this_profiler'})
         self.assertEqual(0, profile.attachment_count)
         profile.enable()
-        self.env['res.partner'].search([], limit=1)
+        self.xmlrpc_common.authenticate(
+            self.env.cr.dbname, 'this is not a user', 
+            'this is not a password', {})
         profile.disable()
         self.assertNotEqual(0, profile.attachment_count)
 
@@ -25,7 +27,9 @@ class TestProfiling(TransactionCase):
         })
         self.assertEqual(0, profile.attachment_count)
         profile.enable()
-        self.env['res.partner'].search([], limit=1)
+        self.xmlrpc_common.authenticate(
+            self.env.cr.dbname, 'this is not a user', 
+            'this is not a password', {})
         profile.disable()
         self.assertNotEqual(0, profile.attachment_count)
 
@@ -37,5 +41,7 @@ class TestProfiling(TransactionCase):
         profile.onchange_enable_postgresql()
         self.assertTrue(profile.description)
         profile.enable()
-        self.env['res.partner'].search([], limit=1)
+        self.xmlrpc_common.authenticate(
+            self.env.cr.dbname, 'this is not a user', 
+            'this is not a password', {})
         profile.disable()
