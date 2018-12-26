@@ -20,7 +20,7 @@ class TestProfiling(TransactionCase):
         """We are testing the creation of a profile."""
         prof_obj = self.env['profiler.profile']
         profile = prof_obj.create({
-            'name': 'this_profiler'
+            'name': 'this_profiler',
             'use_py_index': True,
         })
         self.assertEqual(0, profiler.attachment_count)
