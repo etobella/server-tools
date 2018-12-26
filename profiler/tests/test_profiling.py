@@ -30,6 +30,7 @@ class TestProfiling(TransactionCase):
         self.assertNotEqual(0, profiler.attachment_count)
 
     def test_onchange(self):
+        prof_obj = self.env['profiler.profile']
         profile = prof_obj.create({'name': 'this_profiler'})
         self.assertFalse(profile.description)
         profiler.enable_postgresql = True
