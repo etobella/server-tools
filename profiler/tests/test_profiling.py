@@ -11,3 +11,6 @@ class TestProfiling(TransactionCase):
         profile = prof_obj.create({'name': 'this_profiler'})
         profile.enable()
         profile.disable()
+
+    def test_onchange(self):
+        profile = prof_obj.new(
