@@ -13,9 +13,10 @@ class TestProfiling(HttpCase):
         profile = prof_obj.create({'name': 'this_profiler'})
         self.assertEqual(0, profile.attachment_count)
         profile.enable()
-        self.xmlrpc_common.authenticate(
-            self.env.cr.dbname, 'this is not a user',
-            'this is not a password', {})
+        with self.assertRaises(Fault):
+            self.xmlrpc_common.authenticate(
+                self.env.cr.dbname, 'this is not a user',
+                'this is not a password', {})
         profile.disable()
         self.assertNotEqual(0, profile.attachment_count)
 
@@ -28,9 +29,10 @@ class TestProfiling(HttpCase):
         })
         self.assertEqual(0, profile.attachment_count)
         profile.enable()
-        self.xmlrpc_common.authenticate(
-            self.env.cr.dbname, 'this is not a user',
-            'this is not a password', {})
+        with self.assertRaises(Fault):
+            self.xmlrpc_common.authenticate(
+                self.env.cr.dbname, 'this is not a user',
+                'this is not a password', {})
         profile.disable()
         self.assertNotEqual(0, profile.attachment_count)
 
