@@ -42,7 +42,7 @@ class TestProfiling(HttpCase):
         profile.onchange_enable_postgresql()
         self.assertTrue(profile.description)
         profile.enable()
-		with self.assertRaises(Fault):
+        with self.assertRaises(Fault):
             self.xmlrpc_common.authenticate(
                 self.env.cr.dbname, 'this is not a user',
                 'this is not a password', {})
