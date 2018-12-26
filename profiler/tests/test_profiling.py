@@ -2,6 +2,7 @@
 # Copyright 2018 Vauxoo (https://www.vauxoo.com) <info@vauxoo.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 from odoo.tests.common import HttpCase
+from xmlrpc.client import Fault
 
 
 class TestProfiling(HttpCase):
@@ -41,7 +42,8 @@ class TestProfiling(HttpCase):
         profile.onchange_enable_postgresql()
         self.assertTrue(profile.description)
         profile.enable()
-        self.xmlrpc_common.authenticate(
-            self.env.cr.dbname, 'this is not a user',
-            'this is not a password', {})
+		with self.assertRaises(Fault):
+            self.xmlrpc_common.authenticate(
+                self.env.cr.dbname, 'this is not a user',
+                'this is not a password', {})
         profile.disable()
